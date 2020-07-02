@@ -10,6 +10,8 @@ public class Character : MonoBehaviour
         RunningToEnemy,
         RunningFromEnemy,
         BeginAttack,
+        ZombieRunningToEnemy,
+        ZombieBeginAttack,
         Attack,
         BeginShoot,
         Shoot,
@@ -20,6 +22,7 @@ public class Character : MonoBehaviour
     {
         Pistol,
         Bat,
+        Fist
     }
 
     public Weapon weapon;
@@ -47,7 +50,8 @@ public class Character : MonoBehaviour
     [ContextMenu("Attack")]
     void AttackEnemy()
     {
-        switch (weapon) {
+        switch (weapon)
+        {
             case Weapon.Bat:
                 state = State.RunningToEnemy;
                 break;
@@ -55,13 +59,18 @@ public class Character : MonoBehaviour
             case Weapon.Pistol:
                 state = State.BeginShoot;
                 break;
+
+            case Weapon.Fist:
+                state = State.ZombieRunningToEnemy;
+                break;
         }
     }
 
     bool RunTowards(Vector3 targetPosition, float distanceFromTarget)
     {
         Vector3 distance = targetPosition - transform.position;
-        if (distance.magnitude < 0.00001f) {
+        if (distance.magnitude < 0.00001f)
+        {
             transform.position = targetPosition;
             return true;
         }
@@ -73,7 +82,8 @@ public class Character : MonoBehaviour
         distance = (targetPosition - transform.position);
 
         Vector3 step = direction * runSpeed;
-        if (step.magnitude < distance.magnitude) {
+        if (step.magnitude < distance.magnitude)
+        {
             transform.position += step;
             return false;
         }
@@ -84,7 +94,8 @@ public class Character : MonoBehaviour
 
     void FixedUpdate()
     {
-        switch (state) {
+        switch (state)
+        {
             case State.Idle:
                 animator.SetFloat("Speed", 0.0f);
                 transform.rotation = originalRotation;
@@ -98,6 +109,17 @@ public class Character : MonoBehaviour
 
             case State.BeginAttack:
                 animator.SetTrigger("MeleeAttack");
+                state = State.Attack;
+                break;
+
+            case State.ZombieRunningToEnemy:
+                animator.SetFloat("Speed", runSpeed);
+                if (RunTowards(target.position, distanceFromEnemy))
+                    state = State.ZombieBeginAttack;
+                break;
+
+            case State.ZombieBeginAttack:
+                animator.SetTrigger("Punch");
                 state = State.Attack;
                 break;
 
@@ -117,7 +139,7 @@ public class Character : MonoBehaviour
                 if (RunTowards(originalPosition, 0.0f))
                     state = State.Idle;
                 break;
-            
+
             case State.Death:
                 animator.SetTrigger("Death");
                 gameObject.GetComponent<Character>().enabled = false;
