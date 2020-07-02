@@ -13,6 +13,7 @@ public class Character : MonoBehaviour
         Attack,
         BeginShoot,
         Shoot,
+        Death
     }
 
     public enum Weapon
@@ -30,7 +31,6 @@ public class Character : MonoBehaviour
     Vector3 originalPosition;
     Quaternion originalRotation;
 
-    // Start is called before the first frame update
     void Start()
     {
         animator = GetComponentInChildren<Animator>();
@@ -116,6 +116,11 @@ public class Character : MonoBehaviour
                 animator.SetFloat("Speed", runSpeed);
                 if (RunTowards(originalPosition, 0.0f))
                     state = State.Idle;
+                break;
+            
+            case State.Death:
+                animator.SetTrigger("Death");
+                gameObject.GetComponent<Character>().enabled = false;
                 break;
         }
     }

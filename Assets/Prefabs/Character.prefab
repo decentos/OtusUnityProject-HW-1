@@ -43,3 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d74d1e3773c1d4dbb10848c2887520, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weapon: 0
+  runSpeed: 0
+  distanceFromEnemy: 0
+  target: {fileID: 8602854757133437893}
