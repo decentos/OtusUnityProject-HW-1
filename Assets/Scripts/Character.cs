@@ -50,6 +50,10 @@ public class Character : MonoBehaviour
     [ContextMenu("Attack")]
     void AttackEnemy()
     {
+        if (state != State.Idle || this.target.GetComponentInParent<Character>().state == State.Death)
+        {
+            return;
+        }
         switch (weapon)
         {
             case Weapon.Bat:
