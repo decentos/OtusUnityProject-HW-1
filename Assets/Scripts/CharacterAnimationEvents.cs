@@ -6,7 +6,6 @@ public class CharacterAnimationEvents : MonoBehaviour
 {
     Character character;
 
-    // Start is called before the first frame update
     void Start()
     {
         character = GetComponentInParent<Character>();
@@ -15,10 +14,12 @@ public class CharacterAnimationEvents : MonoBehaviour
     void AttackEnd()
     {
         character.SetState(Character.State.RunningFromEnemy);
+        character.target.GetComponentInParent<Character>().SetState(Character.State.Death);
     }
 
     void ShootEnd()
     {
         character.SetState(Character.State.Idle);
+        character.target.GetComponentInParent<Character>().SetState(Character.State.Death);
     }
 }
