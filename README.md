@@ -1,2 +1,2 @@
-# OtusUnityProject-Module-1
+# OtusUnityProject-HW-1
 Studying on OTUS 2020
